@@ -1,2 +1,3 @@
-# nextjs-blog
-nextjs + nextauth + prisma + sqlite(jwt) + shadcn-ui
+# nextjs + prisma(sqlite) + nextauth
+
+간단한 블로그용
