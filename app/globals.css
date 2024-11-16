@@ -1,4 +1,4 @@
-@layer tailwind-base, tailwind-utilities, primereact;
+@layer tailwind-base, tailwind-utilities;
 
 @layer tailwind-base {
   @tailwind base;
@@ -7,15 +7,6 @@
 @layer tailwind-utilities {
   @tailwind components;
   @tailwind utilities;
-}
-
-/* tailwindcss가 preflight 적용하면 primereact 속성이 지워짐... 그래서 tailwind.config.ts에서 해제함 */
-
-@layer primereact {
-  @import 'primereact/resources/primereact.min.css';
-  @import 'primeicons/primeicons.css';
-  @import 'primereact/resources/themes/lara-light-blue/theme.css'; /* Light 테마 */
-  @import 'primereact/resources/themes/lara-dark-blue/theme.css'; /* Dark 테마 */
 }
 
 body {

@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "./globals.css";
+// primereact.css should be imported after tailwind css (due to preflight)
+import "./primereact.css";
 
 
 const geistSans = localFont({
