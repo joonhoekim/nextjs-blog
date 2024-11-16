@@ -1,8 +1,16 @@
-@layer tailwind-base, tailwind-utilities;
+@layer tailwind-base, primereact, tailwind-utilities;
 
 @layer tailwind-base {
   @tailwind base;
 }
+
+@import 'primereact/resources/primereact.min.css' layer(primereact);
+/* @import 'primereact/resources/themes/lara-dark-blue/theme.css' layer(primereact); */
+@import 'primeicons/primeicons.css' layer(primereact);
+
+/* @import 'primereact/resources/primereact.min.css';
+@import 'primereact/resources/themes/saga-blue/theme.css';
+@import 'primeicons/primeicons.css' */
 
 @layer tailwind-utilities {
   @tailwind components;

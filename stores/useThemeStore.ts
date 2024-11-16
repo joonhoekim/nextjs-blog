@@ -73,7 +73,7 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      currentTheme: 'lara-light-blue',
+      currentTheme: 'lara-dark-blue',
       setTheme: (theme) => set({ currentTheme: theme }),
     }),
     {
