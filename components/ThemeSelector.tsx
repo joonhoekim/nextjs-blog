@@ -25,7 +25,7 @@ const ThemeSelector = () => {
     const selectedTheme = themeOptions.find(t => t.name === currentTheme);
 
     return (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 px-4">
             <Dropdown
                 value={selectedTheme}
                 onChange={(e) => {
@@ -35,10 +35,11 @@ const ThemeSelector = () => {
                 }}
                 options={themeOptions}
                 optionLabel="label"
-                placeholder="Select a Theme"
-                className="w-full md:w-14rem"
+                placeholder="Select or Search Theme"
+                className="w-full min-w-8 md:w-14rem"
                 filter
                 filterBy="label"
+                scrollHeight='500px'
             />
         </div>
     );
