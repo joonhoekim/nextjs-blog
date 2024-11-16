@@ -1,6 +1,10 @@
+import Header from "@/components/Header";
+import { ClientProviders } from "@/providers/ClientProviders";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "./globals.css";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,13 +27,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ClientProviders>
+          <Header />
+          {children}
+        </ClientProviders>
       </body>
+
     </html>
   );
 }

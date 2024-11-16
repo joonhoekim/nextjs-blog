@@ -1,5 +1,4 @@
 import prisma from "@/lib/db";
-import Link from "next/link";
 
 export default async function Home() {
 
@@ -10,11 +9,7 @@ export default async function Home() {
       <h1>BLOG with nextjs</h1>
 
       <div>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <Link href={`/posts/${post.id}`}> {post.title} </Link>
-          </li>
-        ))}
+        <p>여기에는 서비스 설명이 들어갈 예정임</p>
       </div>
     </div >
   );

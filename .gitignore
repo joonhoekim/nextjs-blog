@@ -13,6 +13,14 @@
 !.yarn/releases
 !.yarn/versions
 
+# primereact resources
+/public/primereact/*
+
+# prisma
+/prisma/*.db
+/prisma/*.db-journal
+/prisma/migrations/
+
 # testing
 /coverage
 
