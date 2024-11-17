@@ -1,0 +1,48 @@
+# docker-compose는 이미지를 어떻게 실행할지를 정의한다.
+version: '3.8'
+
+services:
+  nextjs:
+    image: my-nextjs-app:dev
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspace # 소스코드와 prisma 디렉토리 마운트
+      - node_modules:/workspace/node_modules
+      - next-cache:/workspace/.next
+    working_dir: /workspace
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL="file:./prisma/dev.db"
+    # Next.js 실행 전에 prisma generate 실행
+    command: >
+      sh -c "npx prisma generate &&
+             npm run dev"
+    stdin_open: true
+    tty: true
+
+  prisma-studio:
+    image: my-nextjs-app:dev
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    volumes:
+      - .:/workspace
+      - node_modules:/workspace/node_modules
+    working_dir: /workspace
+    ports:
+      - '5555:5555'
+    environment:
+      - DATABASE_URL="file:./prisma/dev.db"
+    # Prisma Studio 실행 전에 prisma generate 실행
+    command: >
+      sh -c "npx prisma generate &&
+             npx prisma studio --hostname 0.0.0.0"
+    depends_on:
+      - nextjs
+
+volumes:
+  node_modules:
+  next-cache:
