@@ -1,16 +1,8 @@
-# nextjs + prisma(sqlite) + nextauth
-
-오픈소스의 힘으로 동적인 블로그 만들기
-
-## `postinstall` script가 추가된 이유
-
-primereact theme을 변경하는 방식으로 사용하려고 하는데, css를 node_modules에서 그대로 가져오는게 next.js 보안정책상 불가능하기 때문.
-
-## Server Actions
+# Server Actions
 
 [docs](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
 
-### Use actions in client components
+## Use actions in client components
 
 인라인에서 정의해서 쓸 수는 있다. 해당 컴포넌트에서만 쓰는 경우에만 이렇게 쓰고, 일반적으로는 @/actions 에 모아두고 쓴다.
 
@@ -24,7 +16,7 @@ export function Button() {
 }
 ```
 
-### 궁금했던 것들
+## 궁금했던 것들
 
 - Server Action은 'use server' 지시문이 있는 함수로, 서버에서만 실행됨
 - Form 또는 버튼 이벤트에서 직접 호출할 수 있음
@@ -33,7 +25,7 @@ export function Button() {
   - 데이터 흐름의 일관성을 얻을 수 있는 장점
   - 서버/클라이언트 컴포넌트 경계가 모호해지고 하이드레이션 이슈가 발생하거나, 타입 추론이 어려워지는 문제가 생길 수 있는 단점
 
-### @/actions 구성
+## @/actions 구성
 
 도메인 단위로 구성하거나, 기능별로 구성하거나, 하이브리드 접근 방식을 쓰거나...  
 Java에서 프로젝트 디렉토리 구성할 때와 동일하게 정해진 답은 없음.
@@ -42,9 +34,9 @@ Java에서 프로젝트 디렉토리 구성할 때와 동일하게 정해진 답
 
 @/app/actions 에 구성하는 경우도 있으나, 많은 사례가 @/actions를 더 선호하는 것으로 보임. 다들 자주 사용하는 경로다보니 접근이 쉬워지는 쪽을 선호하시는 듯.
 
-#### 단일파일로 구성하고 사용하는 예시
+### 단일파일로 구성하고 사용하는 예시
 
-##### action 구성
+#### action 구성
 
 ```typescript
 // @/actions/posts.ts
@@ -104,7 +96,7 @@ export async function publishPost(id: string) {
 }
 ```
 
-##### 사용
+#### 사용
 
 ```typescript
 // 필요한 액션만 선택적으로 import

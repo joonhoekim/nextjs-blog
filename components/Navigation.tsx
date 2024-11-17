@@ -11,6 +11,7 @@ type NavItem = {
 // 네비게이션 항목들은 컴포넌트 외부에 정의
 const navItems: NavItem[] = [
     { label: 'About', href: '/about' },
+    { label: 'Posts', href: '/posts' },
 ]
 
 export default function Navigation() {
@@ -32,12 +33,12 @@ export default function Navigation() {
             </Link>
 
             {/* Nav Links */}
-            <ul className="flex items-center gap-4">
+            <ul className="flex items-center gap-4 list-none m-2 p-2">
                 {navItems.map(({ label, href }) => (
                     <li key={href}>
                         <Link
                             href={href}
-                            className="text-gray-600 hover:text-gray-900 transition-colors"
+                            className="text-gray-600 hover:text-gray-900 transition-colors no-underline"
                         >
                             {label}
                         </Link>

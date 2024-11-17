@@ -1,6 +1,9 @@
-// /lib/prisma.ts
+// /lib/db.ts
 /**
- * 클라이언트가 Prisma Client를 연결시마다 생성하지 않도록 Singleton 패턴 적용 (클라이언트 설정은 여기서)
+ * 1. 클라이언트가 Prisma Client를 Fast Refresh마다 생성하지 않도록 global 객체에 인스턴스를 저장하는 방식으로 Singleton 패턴 적용함
+ * https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
+ * 2. 필요한 경우, PrismaClient의 설정(로깅 등)을 여기서 할 수 있음.
+ *
  */
 import { PrismaClient } from '@prisma/client';
 
@@ -29,9 +32,11 @@ const prismaClientSingleton = () => {
 
     // 이벤트 리스너 등록
     prisma.$on('query', (e) => {
-      console.log('Query: ' + e.query);
-      console.log('Params: ' + e.params);
-      console.log('Duration: ' + e.duration + 'ms');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log(`Query: ${e.query}`);
+      console.log(`Params: ${e.params}`);
+      console.log(`Duration: ${e.duration}ms`);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     });
 
     return prisma;
@@ -41,6 +46,7 @@ const prismaClientSingleton = () => {
   }
 };
 
+// 함수의 반환 타입을 자동으로 추론
 declare const globalThis: {
   prismaGlobal: ReturnType<typeof prismaClientSingleton>;
 } & typeof global;
