@@ -2,6 +2,13 @@
 
 오픈소스의 힘으로 동적인 블로그 만들기
 
+실행을 위한 주요사항
+
+1. 서브모듈로 환경변수 관리하므로 클론 후 `git submodule update --init --recursive` 명령어를 수행해줘야 함.
+2. 환경변수 설정의 예시는 /.env-example을 참조하고, `.env` 이외의 다른 환경변수를 사용하려는 경우 `package.json`을 수정
+
+---
+
 ## `postinstall` script가 추가된 이유
 
 primereact theme을 변경하는 방식으로 사용하려고 하는데, css를 node_modules에서 그대로 가져오는게 next.js 보안정책상 불가능하기 때문.
