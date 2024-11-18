@@ -12,6 +12,7 @@ type NavItem = {
 const navItems: NavItem[] = [
     { label: 'About', href: '/about' },
     { label: 'Posts', href: '/posts' },
+    { label: 'server/client', href: '/posts-example' }
 ]
 
 export default function Navigation() {
