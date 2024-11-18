@@ -7,7 +7,13 @@
     "dev": "env-cmd -f ./nextjs-blog-submodule/.env next dev",
     "build": "env-cmd -f ./nextjs-blog-submodule/.env next build",
     "start": "env-cmd -f ./nextjs-blog-submodule/.env next start",
-    "lint": "next lint"
+    "lint": "env-cmd -f ./nextjs-blog-submodule/.env next lint",
+    "db:generate": "env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma generate",
+    "db:push": "env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma db push",
+    "db:studio": "env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma studio",
+    "db:seed": "env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma db seed",
+    "db:sync": "env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma generate && env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma db push",
+    "db:reset": "env-cmd -f ./nextjs-blog-submodule/.env npm exec prisma db push --force-reset && env-cmd -f ./nextjs-blog-submodule/.env prisma db seed"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.3",

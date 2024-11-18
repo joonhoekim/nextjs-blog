@@ -1,0 +1,62 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": ".",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "./Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"aaron-bond.better-comments",
+				"aeschli.vscode-css-formatter",
+				"bracketpaircolordlw.bracket-pair-color-dlw",
+				"bradlc.vscode-tailwindcss",
+				"christian-kohler.npm-intellisense",
+				"davidanson.vscode-markdownlint",
+				"dbaeumer.vscode-eslint",
+				"dsznajder.es7-react-js-snippets",
+				"dzhavat.css-flexbox-cheatsheet",
+				"eamodio.gitlens",
+				"esbenp.prettier-vscode",
+				"file-icons.file-icons",
+				"george-alisson.html-preview-vscode",
+				"github.github-vscode-theme",
+				"github.remotehub",
+				"hediet.debug-visualizer",
+				"huibizhang.codesnap-plus",
+				"idered.npm",
+				"jmkrivocapich.drawfolderstructure",
+				"jock.svg",
+				"jonathan-yeung.mark-sharp",
+				"mhutchie.git-graph",
+				"ms-azuretools.vscode-docker",
+				"ms-vscode.remote-repositories",
+				"msjsdiag.vscode-react-native",
+				"nucllear.vscode-extension-auto-import",
+				"pflannery.vscode-versionlens",
+				"pixl-garden.bongocat",
+				"prisma.prisma",
+				"redhat.vscode-yaml",
+				"visualstudioexptteam.intellicode-api-usage-examples",
+				"visualstudioexptteam.vscodeintellicode",
+				"vscode-icons-team.vscode-icons",
+				"vunguyentuan.vscode-postcss",
+				"willluke.nextjs"
+			]
+		}
+	}
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}
