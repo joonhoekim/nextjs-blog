@@ -4,8 +4,10 @@
 
 실행을 위한 주요사항
 
-1. 서브모듈로 환경변수 관리하므로 클론 후 `git submodule update --init --recursive` 명령어를 수행해줘야 함.
-2. 환경변수 설정의 예시는 /.env-example을 참조하고, `.env` 이외의 다른 환경변수를 사용하려는 경우 `package.json`을 수정
+1. 서브모듈로 환경변수 관리하므로 클론 후 `git submodule update --init --recursive` 명령어를 수행한 뒤, 루트로 복사
+2. 환경변수 설정의 예시는 /.env-example을 참조
+
+> env-cmd 혹은 dotenv 를 사용하는 방법이 있으나 설정의 간소화를 위해 루트에 위치시킴
 
 ---
 
