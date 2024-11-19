@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import { Post } from '@prisma/client';
 
 export async function getAllPosts(): Promise<Post[]> {

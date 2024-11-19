@@ -1,6 +1,6 @@
 // route.ts에서 분리함.
 
-import prisma from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
@@ -13,19 +13,22 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET!,
     }),
   ],
+  pages: {
+    newUser: '/auth/username',
+  },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true;
-    },
-    async redirect({ url, baseUrl }) {
-      return baseUrl;
-    },
-    async session({ session, user, token }) {
-      return session;
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      return token;
-    },
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   return true;
+    // },
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl;
+    // },
+    // async session({ session, user, token }) {
+    //   return session;
+    // },
+    // async jwt({ token, user, account, profile, isNewUser }) {
+    //   return token;
+    // },
   },
 
   events: {},

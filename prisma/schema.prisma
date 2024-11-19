@@ -10,28 +10,91 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ----- 아래: Blog 관련 비지니스 모델들 -----
+// User > Category > Post > Comment
+
+model Category {
+  id     String @id @default(cuid())
+  name   String
+  slug   String // for url routing
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts  Post[]
+
+  // time
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, slug])
+}
 
 model Post {
   id        String   @id @default(uuid())
   title     String
+  slug      String
   content   String
   published Boolean? @default(false)
-  updatedAt DateTime @updatedAt
+
+  // relation
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id])
+  comments   Comment[]
+
+  // time
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, categoryId, slug])
 }
 
-// 유저관련 시작 --------------------------------------------------------------------
-// User, Account, Session, Verification 모델은 next-auth prisma adapter를 위해 필요함.
+model Comment {
+  id       String  @id @default(cuid())
+  content  String
+  parentId String? // 부모 댓글
+
+  isDeleted Boolean @default(false)
+
+  //relation
+  replies Comment[] @relation("CommentToComment") // 하위 댓글들
+  parent  Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Restrict)
+  userId  String
+  user    User      @relation(fields: [userId], references: [id])
+  postId  String
+  post    Post      @relation(fields: [postId], references: [id])
+
+  // time
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+// ----- 위: Blog 관련 비지니스 모델들 -----
+
+// ----- 아래 모델은 next-auth prisma adapter를 위해 필요함 -----
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?         @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  // time (required)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // 애플리케이션에서 사용하려는 필드 확장
+  bio        String?
+  slug       String     @unique // For URL routing
+  categories Category[]
+  Post       Post[]
+  Comment    Comment[]
 }
 
 model Account {
@@ -47,12 +110,12 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
 }
 
@@ -62,17 +125,18 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
+  //time
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@unique([identifier, token])
 }
 
-// 유저관리 끝----------------------------------------------------------------------------
+// ----- 위 모델은 next-auth prisma adapter를 위해 필요함 ----------
