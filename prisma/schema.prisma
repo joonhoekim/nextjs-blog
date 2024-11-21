@@ -91,7 +91,7 @@ model User {
 
   // 애플리케이션에서 사용하려는 필드 확장
   bio        String?
-  slug       String     @unique // For URL routing
+  slug       String?    @unique // For URL routing
   categories Category[]
   Post       Post[]
   Comment    Comment[]
