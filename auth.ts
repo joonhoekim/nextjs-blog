@@ -1,9 +1,11 @@
-// route.ts에서 분리함.
+// @/auth.ts
+// - extracted from route.ts.
+// reference: https://next-auth.js.org/configuration/nextjs
 
 import { prisma } from '@/lib/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { User as PrismaUser } from '@prisma/client';
-import { Session } from 'inspector/promises';
+import { Session } from 'next-auth';
 import NextAuth, { NextAuthOptions, Account, Profile, User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
@@ -30,6 +32,10 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET!,
     }),
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 60 * 24 * 30,
+  },
   callbacks: {
     // return true 는 해당 콜백이 redirect를 하게 만든다.
     async signIn({ user, account, profile }: SignInParams) {
