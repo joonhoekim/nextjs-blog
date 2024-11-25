@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+    // 경로 정의
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
     // unused 경고는 개발 중 혼란을 줘서 비활성화함.
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    // unused 경고는 개발 중 혼란을 줘서 비활성화함.
     "target": "ES2017",
     "lib": [
       "dom",
@@ -36,7 +40,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules"
