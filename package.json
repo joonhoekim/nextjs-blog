@@ -13,7 +13,15 @@
     "db:studio": "npm exec prisma studio",
     "db:seed": "npm exec prisma db seed",
     "db:sync": "npm exec prisma generate && npm exec prisma db push",
-    "db:reset": "npm exec prisma db push --force-reset && prisma db seed"
+    "db:reset": "npm exec prisma db push --force-reset && npm exec prisma db seed",
+    "db:migrate": "npm exec prisma migrate dev",
+    "db:deploy": "npm exec prisma migrate deploy",
+    "db:status": "npm exec prisma migrate status",
+    "db:diff": "npm exec prisma migrate diff",
+    "setup": "npm install && npm run db:sync && npm run db:seed"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
@@ -35,7 +43,8 @@
     "zustand": "^5.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.17.6",
+    "@faker-js/faker": "^9.2.0",
+    "@types/node": "^20.17.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "cpy-cli": "^5.0.0",
