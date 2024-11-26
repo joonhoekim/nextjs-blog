@@ -128,7 +128,11 @@ model User {
 
   // 애플리케이션에서 사용하려는 필드 확장
   bio        String?
+<<<<<<< HEAD
   handle     String     @unique @default(cuid()) // editable, =nickname, =slug
+=======
+  handle     String     @unique @default(cuid()) // = nickname, = slug
+>>>>>>> eaf4798b54b401c0b53687ee8b7ca19b64451954
   categories Category[]
   Post       Post[]
   Comment    Comment[]
