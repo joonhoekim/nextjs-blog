@@ -1,13 +1,13 @@
 
 interface CategoryParams {
-    userSlug: string;
+    handle: string;
     categorySlug: string;
 }
 
 export default async function Post(
     { params }: { params: CategoryParams }
 ) {
-    const { userSlug, categorySlug } = params;
+    const { handle, categorySlug } = params;
 
 
     return (
@@ -15,7 +15,7 @@ export default async function Post(
             <h1>BLOG with nextjs</h1>
 
             <div>
-                <p>params: {[userSlug, categorySlug].join('/')}</p>
+                <p>params: {[handle, categorySlug].join('/')}</p>
             </div>
         </div >
     );

@@ -4,25 +4,8 @@
 
 import { prisma } from '@/lib/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { User as PrismaUser } from '@prisma/client';
-import { Session } from 'next-auth';
 import NextAuth, { NextAuthOptions, Account, Profile, User } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
-import { slugify } from './lib/utils/slugify';
-import { log } from 'console';
-
-interface SignInParams {
-  user: User;
-  account: Account | null;
-  profile?: Profile;
-}
-
-interface SessionParams {
-  session: Session;
-  user: User;
-  token: JWT;
-}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -34,26 +17,18 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    // return true 는 해당 콜백이 redirect를 하게 만든다.
-    async signIn({ user, account, profile }: SignInParams) {
-      try {
-        // 1. db 내 유저 확인
-        const dbUser = await prisma.user.findUnique({
-          where: { email: user.email! },
-          include: { accounts: true },
-        });
+    // "Callbacks are asynchronous functions you can use to control what happens when an action is performed."
+    // "You can specify a handler for any of the callbacks below."
 
-        // 2. guard clause 적용
-        // 이미 유저가 있는 경우
-        if (dbUser) {
-          // 처리
-          return true;
+    // return true = callback allows redirect
+    async signIn({ user }) {
+      try {
+        if (!user.email) {
+          return false;
         }
-        // 새로운 유저인 경우
-        // 처리
         return true;
       } catch (e) {
         console.log('sign-in error:', e);
@@ -61,18 +36,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   events: {
-    // user slug 처리 필요
-    async createUser({ user }) {
-      try {
-        const slug = user.email?.split('@')[0];
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { slug },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
+    // "Events are asynchronous functions that do not return a response, they are useful for audit logging, analytics or syncing user data."
+    // "The events are useful to integrate with other systems (e.g. mail systems, CRM, etc.)"
   },
   pages: {
     // signIn: '/auth/signin',

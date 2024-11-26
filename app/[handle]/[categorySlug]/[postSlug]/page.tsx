@@ -1,6 +1,6 @@
 
 interface PostParams {
-    userSlug: string;
+    handle: string;
     categorySlug: string;
     postSlug: string;
 }
@@ -8,7 +8,7 @@ interface PostParams {
 export default async function Post(
     { params }: { params: PostParams }
 ) {
-    const { userSlug, categorySlug, postSlug } = params;
+    const { handle, categorySlug, postSlug } = params;
 
 
     return (
@@ -16,7 +16,7 @@ export default async function Post(
             <h1>BLOG with nextjs</h1>
 
             <div>
-                <p>params: {[userSlug, categorySlug, postSlug].join('/')}</p>
+                <p>params: {[handle, categorySlug, postSlug].join('/')}</p>
             </div>
         </div >
     );
