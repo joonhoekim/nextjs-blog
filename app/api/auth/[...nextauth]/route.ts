@@ -1,5 +1,6 @@
-import { handler } from '@/auth';
+import NextAuth from 'next-auth';
+import { authOptions } from '@/auth';
+
+export const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
-// cf: nextauth v4 부터 handler 내보내는 방식이 바뀜

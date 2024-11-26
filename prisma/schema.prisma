@@ -76,27 +76,7 @@ model Comment {
 // ----- 위: Blog 관련 비지니스 모델들 -----
 
 // ----- 아래 모델은 next-auth prisma adapter를 위해 필요함 -----
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  role          String    @default("user")
-
-  // time (required)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // 애플리케이션에서 사용하려는 필드 확장
-  bio        String?
-  slug       String?    @unique // For URL routing
-  categories Category[]
-  Post       Post[]
-  Comment    Comment[]
-}
+// reference: https://next-auth.js.org/v3/adapters/prisma
 
 model Account {
   id                String  @id @default(cuid())
@@ -132,10 +112,35 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-model VerificationToken {
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  role          String    @default("user")
+
+  // time (required)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 애플리케이션에서 사용하려는 필드 확장
+  bio        String?
+  slug       String?    @unique // For URL routing
+  categories Category[]
+  Post       Post[]
+  Comment    Comment[]
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
   identifier String
-  token      String
+  token      String   @unique
   expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
 }
