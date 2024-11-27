@@ -7,22 +7,32 @@ import { Button } from 'primereact/button'
 import { Menu } from 'primereact/menu'
 import { MenuItem } from 'primereact/menuitem'
 import { useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import ThemeSelector from './ThemeSelector'
 
 export default function AuthButton() {
     const { data: session, status } = useSession()
     const menuRef = useRef<Menu>(null)
+    const router = useRouter()
 
     const userMenuItems: MenuItem[] = [
         {
             label: 'Profile',
             icon: 'pi pi-user',
-            url: '/profile'
+            command: (e) => {
+                e.originalEvent.preventDefault();
+                e.originalEvent.stopPropagation();
+                router.push('/profile');
+            }
         },
         {
             label: 'Settings',
             icon: 'pi pi-cog',
-            url: '/settings'
+            command: (e) => {
+                e.originalEvent.preventDefault();
+                e.originalEvent.stopPropagation();
+                router.push('/settings');
+            }
         },
         {
             separator: true
@@ -30,9 +40,19 @@ export default function AuthButton() {
         {
             label: 'Sign Out',
             icon: 'pi pi-sign-out',
-            command: () => signOut()
+            command: (e) => {
+                e.originalEvent.preventDefault();
+                e.originalEvent.stopPropagation();
+                signOut();
+            }
         }
     ]
+
+    const handleAvatarClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        menuRef.current?.toggle(e);
+    };
 
     return (
         <div className="flex items-center h-[40px]">
@@ -45,7 +65,7 @@ export default function AuthButton() {
                         image={session.user.image || '/default-avatar.png'}
                         shape="circle"
                         className="cursor-pointer"
-                        onClick={(e) => menuRef.current?.toggle(e)}
+                        onClick={handleAvatarClick}
                     />
                     <Menu
                         model={userMenuItems}
