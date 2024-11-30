@@ -22,18 +22,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // "Callbacks are asynchronous functions you can use to control what happens when an action is performed."
     // "You can specify a handler for any of the callbacks below."
-
-    // return true = callback allows redirect
-    async signIn({ user }) {
-      try {
-        if (!user.email) {
-          return false;
-        }
-        return true;
-      } catch (e) {
-        console.log('sign-in error:', e);
-      }
-    },
   },
   events: {
     // "Events are asynchronous functions that do not return a response, they are useful for audit logging, analytics or syncing user data."
