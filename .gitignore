@@ -52,3 +52,6 @@ yarn-error.log*
 next-env.d.ts
 
 dev.db
+
+# jetbrains
+.idea/**

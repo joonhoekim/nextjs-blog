@@ -1,10 +1,13 @@
 {
     "WillLuke.nextjs.hasPrompted": true,
     "WillLuke.nextjs.addTypesOnSave": true,
-    "typescript.tsserver.maxTsServerMemory": 8192,
+    "typescript.tsserver.maxTsServerMemory": 4096,
     "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.suggest.completeFunctionCalls": true,
     "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "typescript.tsserver.watchOptions": {
+        "watchFile": "useFsEvents"
+    },
     "js/ts.implicitProjectConfig.checkJs": true
 }
