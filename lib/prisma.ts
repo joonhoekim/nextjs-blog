@@ -30,14 +30,19 @@ const prismaClientSingleton = () => {
       ],
     });
 
-    // 이벤트 리스너 등록
-    prisma.$on('query', (e) => {
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-      console.log(`Query: ${e.query}`);
-      console.log(`Params: ${e.params}`);
-      console.log(`Duration: ${e.duration}ms`);
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    });
+    // event listenr only for serverside
+    if (
+      process.env.NODE_ENV === 'development' &&
+      typeof window === 'undefined'
+    ) {
+      prisma.$on('query', (e) => {
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        console.log(`Query: ${e.query}`);
+        console.log(`Params: ${e.params}`);
+        console.log(`Duration: ${e.duration}ms`);
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      });
+    }
 
     return prisma;
   } else {
