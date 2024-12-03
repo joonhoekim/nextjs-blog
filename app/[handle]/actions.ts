@@ -1,15 +1,19 @@
 'use server';
 
+import { authOptions } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { slugify } from '@/lib/utils/slugify';
-import { type Session } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 
 // authorization logic
-export async function authorizeUserWithHandle(
-  session: Session,
-  handle: string
-) {
+// server component / client component / action 각각에서 필요시 각각 검증 시행
+// 아래는 action의 검증부가 공통적으로 사용되니까 추출한 것.
+// - action에서 한번 더 검증하는 이유: 세션이 만료된 상태에서 액션이 수행되는 걸 방지하기 위함
+// - client에서 세션으로 인증/인가 주의: 사용자가 session 값을 변경할 수 있으므로 UI 구성 등 간단한 경우에만 사용
+export async function authorizeUserWithHandle(handle: string) {
+  const session = await getServerSession(authOptions);
+
   const user = await prisma.user.findUnique({
     where: { handle: handle },
   });
@@ -21,8 +25,10 @@ export async function authorizeUserWithHandle(
 
   return user;
 }
+
+// 별도의 검증이 요구되지 않음. 카테고리 리스트를 받아오는 부분임.
 // get user's category items
-export async function getUserIncludeCategory(session: Session, handle: string) {
+export async function getUserIncludeCategory(handle: string) {
   const user = await prisma.user.findUnique({
     where: { handle },
     include: {
@@ -38,22 +44,13 @@ export async function getUserIncludeCategory(session: Session, handle: string) {
     throw new Error('Author not found');
   }
 
-  // authorization
-  if (user.email !== session?.user?.email) {
-    throw new Error('Unauthorized');
-  }
-
   return user;
 }
 
 // create category action
-export async function addCategory(
-  session: Session,
-  handle: string,
-  name: string
-) {
+export async function addCategory(handle: string, name: string) {
   // authorization
-  const user = await authorizeUserWithHandle(session, handle);
+  const user = await authorizeUserWithHandle(handle);
 
   // create category
   const category = await prisma.category.create({
@@ -71,14 +68,30 @@ export async function addCategory(
   return category;
 }
 
-// delete category action
-export async function deleteCategory(
-  session: Session,
+// update category name
+export async function updateCategory(
   handle: string,
-  categoryId: string
+  categoryId: string,
+  newCategoryName: string
 ) {
   // authorization
-  const user = await authorizeUserWithHandle(session, handle);
+  const user = await authorizeUserWithHandle(handle);
+
+  const category = await prisma.category.update({
+    where: { id: categoryId, userId: user.id },
+    data: {
+      name: newCategoryName,
+      slug: slugify(newCategoryName),
+    },
+  });
+
+  return category;
+}
+
+// delete category action
+export async function deleteCategory(handle: string, categoryId: string) {
+  // authorization
+  const user = await authorizeUserWithHandle(handle);
 
   const category = await prisma.category.delete({
     where: {
@@ -88,27 +101,6 @@ export async function deleteCategory(
   });
 
   revalidatePath(`/${handle}`);
-
-  return category;
-}
-
-// update category name
-export async function updateCategory(
-  session: Session,
-  handle: string,
-  categoryId: string,
-  newCategoryName: string
-) {
-  // authorization
-  const user = await authorizeUserWithHandle(session, handle);
-
-  const category = await prisma.category.update({
-    where: { id: categoryId, userId: user.id },
-    data: {
-      name: newCategoryName,
-      slug: slugify(newCategoryName),
-    },
-  });
 
   return category;
 }
