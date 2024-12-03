@@ -32,13 +32,14 @@ export default function UserLayoutClient({
   const pathname = usePathname();
 
   // Convert categories to menu items
-  const menuItems: MenuItem[] = user.categories.map((category) => ({
+  const menuItems: (MenuItem & { id: string })[] = user.categories.map((category) => ({
+    id: category.id, // Store category id
     label: category.name,
     icon: "pi pi-folder",
     command: () => {
-      router.push(`/${handle}/${category.id}`);
+      router.push(`/${handle}/${category.slug}`);
     },
-    className: pathname.includes(`/${category.id}`) ? "p-highlight" : "",
+    className: pathname.includes(`/${category.slug}`) ? "p-highlight" : "",
   }));
 
   return (
@@ -68,9 +69,9 @@ export default function UserLayoutClient({
           {user.name}&apos;s Categories
         </h2>
         <div className="flex flex-col gap-2">
-          {menuItems.map((item, index) => (
+          {menuItems.map((item) => (
             <Button
-              key={index}
+              key={item.id}
               label={item.label}
               icon={item.icon}
               className="p-button-text justify-content-start"

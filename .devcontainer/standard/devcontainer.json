@@ -45,7 +45,8 @@
 				"visualstudioexptteam.vscodeintellicode",
 				"vscode-icons-team.vscode-icons",
 				"vunguyentuan.vscode-postcss",
-				"willluke.nextjs"
+				"willluke.nextjs",
+				"tldraw-org.tldraw-vscode"
 			]
 		}
 	}
