@@ -1,13 +1,15 @@
-import { authOptions } from '@/auth';
+'use server';
+
 import { prisma } from '@/lib/prisma';
 import { slugify } from '@/lib/utils/slugify';
-import { getServerSession, User } from 'next-auth';
+import { type Session } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 
-// create category action
-export async function addCategory(handle: string, name: string) {
-  // get auth info
-  const session = await getServerSession(authOptions);
+// authorization logic
+export async function authorizeUserWithHandle(
+  session: Session,
+  handle: string
+) {
   const user = await prisma.user.findUnique({
     where: { handle: handle },
   });
@@ -17,14 +19,48 @@ export async function addCategory(handle: string, name: string) {
     throw new Error('Unauthorized');
   }
 
-  const slug = slugify(name);
+  return user;
+}
+// get user's category items
+export async function getUserIncludeCategory(session: Session, handle: string) {
+  const user = await prisma.user.findUnique({
+    where: { handle },
+    include: {
+      categories: {
+        orderBy: {
+          name: 'desc',
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    throw new Error('Author not found');
+  }
+
+  // authorization
+  if (user.email !== session?.user?.email) {
+    throw new Error('Unauthorized');
+  }
+
+  return user;
+}
+
+// create category action
+export async function addCategory(
+  session: Session,
+  handle: string,
+  name: string
+) {
+  // authorization
+  const user = await authorizeUserWithHandle(session, handle);
 
   // create category
   const category = await prisma.category.create({
     data: {
       name,
       userId: user.id,
-      slug,
+      slug: slugify(name),
     },
   });
 
@@ -36,15 +72,13 @@ export async function addCategory(handle: string, name: string) {
 }
 
 // delete category action
-export async function deleteCategory(handle: string, categoryId: string) {
-  const session = await getServerSession(authOptions);
-  const user = await prisma.user.findUnique({
-    where: { handle: handle },
-  });
-
-  if (!user || user.email !== session?.user?.email) {
-    throw new Error('Unauthorized');
-  }
+export async function deleteCategory(
+  session: Session,
+  handle: string,
+  categoryId: string
+) {
+  // authorization
+  const user = await authorizeUserWithHandle(session, handle);
 
   const category = await prisma.category.delete({
     where: {
@@ -60,26 +94,19 @@ export async function deleteCategory(handle: string, categoryId: string) {
 
 // update category name
 export async function updateCategory(
+  session: Session,
   handle: string,
   categoryId: string,
   newCategoryName: string
 ) {
-  const session = await getServerSession(authOptions);
-  const user = await prisma.user.findUnique({
-    where: { handle: handle },
-  });
-
-  if (!user || session?.user?.email !== user.email) {
-    throw new Error('Unauthorized');
-  }
-
-  const categorySlug = slugify(newCategoryName);
+  // authorization
+  const user = await authorizeUserWithHandle(session, handle);
 
   const category = await prisma.category.update({
     where: { id: categoryId, userId: user.id },
     data: {
       name: newCategoryName,
-      slug: categorySlug,
+      slug: slugify(newCategoryName),
     },
   });
 
