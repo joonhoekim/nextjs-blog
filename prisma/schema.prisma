@@ -130,8 +130,8 @@ model User {
   bio        String?
   handle     String     @unique @default(cuid()) // = nickname, = slug
   categories Category[]
-  Post       Post[]
-  Comment    Comment[]
+  posts      Post[]
+  comments   Comment[]
 
   @@index([id])
   @@index([handle])
