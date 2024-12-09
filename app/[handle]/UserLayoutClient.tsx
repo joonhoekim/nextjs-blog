@@ -32,15 +32,17 @@ export default function UserLayoutClient({
   const pathname = usePathname();
 
   // Convert categories to menu items
-  const menuItems: (MenuItem & { id: string })[] = user.categories.map((category) => ({
-    id: category.id, // Store category id
-    label: category.name,
-    icon: "pi pi-folder",
-    command: () => {
-      router.push(`/${handle}/${category.slug}`);
-    },
-    className: pathname.includes(`/${category.slug}`) ? "p-highlight" : "",
-  }));
+  const menuItems: (MenuItem & { id: string })[] = user.categories.map(
+    (category) => ({
+      id: category.id, // Store category id
+      label: category.name,
+      icon: "pi pi-folder",
+      command: () => {
+        router.push(`/${handle}/${category.slug}`);
+      },
+      className: pathname.includes(`/${category.slug}`) ? "p-highlight" : "",
+    }),
+  );
 
   return (
     <div className="flex flex-col">
@@ -76,6 +78,7 @@ export default function UserLayoutClient({
               icon={item.icon}
               className="p-button-text justify-content-start"
               onClick={() => {
+                // @ts-ignore
                 item.command?.();
                 setSidebarVisible(false);
               }}

@@ -118,3 +118,53 @@ export async function getCategoryPosts(handle: string, categorySlug: string) {
 
   return userCategoryLists;
 }
+
+export async function saveCategoryPost(
+  handle: string,
+  categorySlug: string,
+  title: string,
+  content: string,
+) {
+  const user = await authorizeUserWithHandle(handle);
+  const category = await prisma.category.findUnique({
+    where: {
+      userId_slug: {
+        userId: user.id,
+        slug: categorySlug,
+      },
+    },
+  });
+  const post = await prisma.post.create({
+    data: {
+      title: title,
+      content: content,
+      slug: slugify(title),
+      published: true,
+      userId: user.id,
+      categoryId: category!.id,
+    },
+  });
+}
+
+export async function getPost(
+  handle: string,
+  categorySlug: string,
+  postSlug: string,
+) {
+  const post = await prisma.post.findFirst({
+    where: {
+      category: {
+        user: {
+          handle: handle,
+        },
+        slug: categorySlug,
+      },
+    },
+    include: {
+      category: true,
+      user: true,
+    },
+  });
+
+  return post;
+}
