@@ -1,10 +1,10 @@
-'use server';
+"use server";
 
-import { authOptions } from '@/auth';
-import { prisma } from '@/lib/prisma';
-import { slugify } from '@/lib/utils/slugify';
-import { getServerSession } from 'next-auth';
-import { revalidatePath } from 'next/cache';
+import { authOptions } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { slugify } from "@/lib/utils/slugify";
+import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 // authorization logic
 // server component / client component / action 각각에서 필요시 각각 검증 시행
@@ -20,7 +20,7 @@ export async function authorizeUserWithHandle(handle: string) {
 
   // authorization
   if (!user || user.email !== session?.user?.email) {
-    throw new Error('Unauthorized');
+    throw new Error("Unauthorized");
   }
 
   return user;
@@ -34,14 +34,14 @@ export async function getUserIncludeCategory(handle: string) {
     include: {
       categories: {
         orderBy: {
-          name: 'desc',
+          name: "desc",
         },
       },
     },
   });
 
   if (!user) {
-    throw new Error('Author not found');
+    throw new Error("Author not found");
   }
 
   return user;
@@ -72,7 +72,7 @@ export async function addCategory(handle: string, name: string) {
 export async function updateCategory(
   handle: string,
   categoryId: string,
-  newCategoryName: string
+  newCategoryName: string,
 ) {
   // authorization
   const user = await authorizeUserWithHandle(handle);
@@ -103,4 +103,18 @@ export async function deleteCategory(handle: string, categoryId: string) {
   revalidatePath(`/${handle}`);
 
   return category;
+}
+
+//-------------------  POST  -----------------------------
+
+export async function getCategoryPosts(handle: string, categorySlug: string) {
+  const userCategoryLists = await prisma.post.findMany({
+    where: {
+      user: { handle },
+      category: { slug: categorySlug },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return userCategoryLists;
 }
