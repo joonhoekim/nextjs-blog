@@ -26,7 +26,7 @@ export default function PostList({
             <div className="flex justify-between items-center">
               <span>Posts</span>
               {isOwner && (
-                <Link href={`{$pathname}/edit`}>
+                <Link href={`${pathname}/edit`}>
                   <Button title="New Post" label="New Post" />
                 </Link>
               )}

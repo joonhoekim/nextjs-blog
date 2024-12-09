@@ -9,7 +9,7 @@ interface CategoryParams {
 }
 
 export default async function Post({ params }: { params: CategoryParams }) {
-  const { handle, categorySlug } = params;
+  const { handle, categorySlug } = await params;
   const session = await getServerSession(authOptions);
   const authorizedUser = await authorizeUserWithHandle(handle);
   const posts = await getCategoryPosts(handle, categorySlug);
