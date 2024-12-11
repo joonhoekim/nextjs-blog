@@ -5,7 +5,7 @@ import { Editor } from "primereact/editor";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useRouter } from "next/navigation";
-import { saveCategoryPost } from "@/app/[handle]/actions";
+import { saveCategoryPost } from "@/app/[prefixedHandle]/actions";
 import { slugify } from "@/lib/utils/slugify";
 
 interface PostParams {

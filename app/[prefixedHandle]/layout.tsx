@@ -7,14 +7,15 @@ import UserLayoutClient from "./UserLayoutClient";
 
 interface UserLayoutProps {
   children: React.ReactNode;
-  params: { handle: string };
+  params: { prefixedHandle: string };
 }
 
 export default async function UserLayout({
   children,
   params,
 }: UserLayoutProps) {
-  const { handle } = params;
+  const { prefixedHandle } = params;
+  const handle = prefixedHandle.slice(1);
 
   const user = await prisma.user.findUnique({
     where: { handle },

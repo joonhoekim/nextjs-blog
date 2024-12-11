@@ -28,7 +28,7 @@ const UserCTA = ({ handle }: UserCTAProps) => {
                     <p className="text-gray-600">YOUR HOME</p>
                 </div>
 
-                <Link href={`/${handle}`} >
+                <Link href={`/@${handle}`} >
                     <Button
                         label="USER_HOME"
                         icon="pi pi-user"

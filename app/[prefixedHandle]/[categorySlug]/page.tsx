@@ -1,7 +1,7 @@
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import { authorizeUserWithHandle, getCategoryPosts } from "../actions";
-import PostList from "@/app/[handle]/[categorySlug]/PostList";
+import PostList from "@/app/[prefixedHandle]/[categorySlug]/PostList";
 
 interface CategoryParams {
   handle: string;

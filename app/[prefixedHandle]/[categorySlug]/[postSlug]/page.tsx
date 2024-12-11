@@ -1,4 +1,4 @@
-import { getPost } from "@/app/[handle]/actions";
+import { getPost } from "@/app/[prefixedHandle]/actions";
 
 interface PostParams {
   handle: string;

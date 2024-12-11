@@ -6,16 +6,28 @@ import CategoryList from './CategoryList'
 import { FloatLabel } from 'primereact/floatlabel'
 import { InputText } from 'primereact/inputtext'
 import { Session } from 'next-auth';
+import { notFound } from 'next/navigation';
 
 export default async function UserProfilePage({
     params
 }: {
-    params: { handle: string }
+    params: { prefixedHandle: string }
 }) {
-    const { handle } = params;
+
+    const prefixedHandle = decodeURIComponent(params.prefixedHandle);
+
+    // handle must have prefix '@'
+    if (!prefixedHandle.startsWith('@')) {
+        console.log('invalid handle', prefixedHandle);
+        return notFound();
+    }
+
+    const handle = prefixedHandle.slice(1);
+    console.log(handle);
+
     const session = await getServerSession(authOptions);
-    const authorizedUser = await authorizeUserWithHandle(params.handle);
-    const categories = (await getUserIncludeCategory(params.handle)).categories;
+    const authorizedUser = await authorizeUserWithHandle(handle);
+    const categories = (await getUserIncludeCategory(handle)).categories;
 
     const isOwner = authorizedUser.email === session?.user?.email
 
