@@ -5,6 +5,7 @@ import UserCTA from './UserCTA';
 import { prisma } from '@/lib/prisma';
 
 export default async function Home() {
+
   // Get session
   const session = await getServerSession(authOptions);
 
@@ -25,7 +26,13 @@ export default async function Home() {
           <p>여기에는 서비스 설명이 들어갈 예정임</p>
         </div>
         {/* Only render UserCTA if handle exists */}
-        {handle && <UserCTA handle={handle} />}
+        {handle && <UserCTA
+            key='1'
+            data-aos="fade-up"
+            data-aos-delay="100"
+            handle={handle}/>
+        }
+
       </div>
   );
 }
