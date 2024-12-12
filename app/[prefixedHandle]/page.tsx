@@ -3,9 +3,6 @@ import { authorizeUserWithHandle, getUserIncludeCategory } from './actions'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth'
 import CategoryList from './CategoryList'
-import { FloatLabel } from 'primereact/floatlabel'
-import { InputText } from 'primereact/inputtext'
-import { Session } from 'next-auth';
 import { notFound } from 'next/navigation';
 
 export default async function UserProfilePage({
@@ -13,8 +10,8 @@ export default async function UserProfilePage({
 }: {
     params: { prefixedHandle: string }
 }) {
-
-    const prefixedHandle = decodeURIComponent(params.prefixedHandle);
+    // @ havs to be encoded & %40 have to be decoded
+    const prefixedHandle = decodeURIComponent(await params.prefixedHandle);
 
     // handle must have prefix '@'
     if (!prefixedHandle.startsWith('@')) {

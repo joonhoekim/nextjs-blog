@@ -5,6 +5,33 @@ import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/utils/slugify";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { notFound } from "next/navigation";
+
+export async function getUserEmailByHandle(handle: string) {
+  const user = prisma.user.findUnique({
+    where: { handle },
+    select: { email: true },
+  })
+
+  if (!user) {
+    notFound();  // Next.js의 not-found.tsx로 라우팅
+  }
+
+  return user;
+
+}
+
+export async function getCategoriesByHandle(handle: string) {
+  const categories = prisma.category.findMany({
+    where: {
+      user: {
+        handle,
+      },
+    },
+  });
+
+
+}
 
 // authorization logic
 // server component / client component / action 각각에서 필요시 각각 검증 시행

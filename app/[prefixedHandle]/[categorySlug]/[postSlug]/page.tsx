@@ -7,7 +7,7 @@ interface PostParams {
 }
 
 export default async function Post({ params }: { params: PostParams }) {
-  const { handle, categorySlug, postSlug } = await params;
+  const { handle, categorySlug, postSlug } = params;
   const post = await getPost(handle, categorySlug, postSlug);
 
   return (

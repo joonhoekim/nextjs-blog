@@ -1,5 +1,5 @@
 // components/About.tsx
-'use client'
+'use client';
 
 import { Avatar } from 'primereact/avatar'
 import { Card } from 'primereact/card'
@@ -68,7 +68,7 @@ const About = () => {
                 <p className="line-height-3">
                     Passionate full stack developer with 6+ years of experience building scalable web applications.
                     Specialized in TypeScript, React, and Node.js. Always eager to learn new technologies and solve
-                    complex problems. When not coding, you'll find me contributing to open source projects or
+                    complex problems. When not coding, you`&apos;`ll find me contributing to open source projects or
                     mentoring junior developers.
                 </p>
             </Card>

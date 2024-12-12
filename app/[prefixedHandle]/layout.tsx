@@ -1,40 +1,31 @@
 // app/[handle]/layout.tsx
-import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/auth";
-import { notFound } from "next/navigation";
 import UserLayoutClient from "./UserLayoutClient";
+import {extractHandleFromParam} from "@/lib/utils/handle";
+import {getCategoriesByHandle, getUserEmailByHandle} from "@/app/[prefixedHandle]/actions";
 
 interface UserLayoutProps {
   children: React.ReactNode;
-  params: { prefixedHandle: string };
+  params: {
+    prefixedHandle: string;
+  };
 }
 
 export default async function UserLayout({
   children,
-  params,
+    params,
 }: UserLayoutProps) {
+
   const { prefixedHandle } = params;
-  const handle = prefixedHandle.slice(1);
-
-  const user = await prisma.user.findUnique({
-    where: { handle },
-    include: {
-      categories: {
-        orderBy: { name: "desc" },
-      },
-    },
-  });
-
-  if (!user) {
-    notFound();
-  }
-
+  const handle = extractHandleFromParam(prefixedHandle);
+  const dbEmail = await getUserEmailByHandle(handle);
   const session = await getServerSession(authOptions);
-  const isOwner = session?.user?.email === user.email;
+  const isOwner = session?.user?.email === dbEmail;
+  const categories = await getCategoriesByHandle(handle);
 
   return (
-    <UserLayoutClient user={user} isOwner={isOwner} handle={handle}>
+    <UserLayoutClient categories={categories} isOwner={isOwner} >
       {children}
     </UserLayoutClient>
   );
