@@ -11,14 +11,13 @@ export async function getUserEmailByHandle(handle: string) {
   const user = prisma.user.findUnique({
     where: { handle },
     select: { email: true },
-  })
+  });
 
   if (!user) {
-    notFound();  // Next.js의 not-found.tsx로 라우팅
+    notFound(); // Next.js의 not-found.tsx로 라우팅
   }
 
   return user;
-
 }
 
 export async function getCategoriesByHandle(handle: string) {
@@ -30,7 +29,7 @@ export async function getCategoriesByHandle(handle: string) {
     },
   });
 
-
+  return categories;
 }
 
 // authorization logic

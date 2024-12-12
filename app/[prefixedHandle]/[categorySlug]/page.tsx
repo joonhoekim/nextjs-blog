@@ -1,23 +1,30 @@
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
-import { authorizeUserWithHandle, getCategoryPosts } from "../actions";
+import {
+  authorizeUserWithHandle,
+  getCategoryPosts,
+  getUserEmailByHandle,
+} from "../actions";
 import PostList from "@/app/[prefixedHandle]/[categorySlug]/PostList";
+import { extractHandleFromParam } from "@/lib/utils/handle";
 
 interface CategoryParams {
-  handle: string;
+  prefixedHandle: string;
   categorySlug: string;
 }
 
 export default async function Post({ params }: { params: CategoryParams }) {
-  const { handle, categorySlug } = await params;
+  const { prefixedHandle, categorySlug } = params;
+  const handle = extractHandleFromParam(prefixedHandle);
   const session = await getServerSession(authOptions);
-  const authorizedUser = await authorizeUserWithHandle(handle);
+  const dbEmail = await getUserEmailByHandle(handle);
+  const isOwner = dbEmail ? dbEmail! === session?.user?.email! : false;
+
   const posts = await getCategoryPosts(handle, categorySlug);
-  const isOwner = authorizedUser.email === session?.user?.email;
 
   return (
     <div className="max-w-screen-md mx-auto p-4">
-      <PostList posts={posts} isOwner={isOwner} handle={handle} />
+      <PostList posts={posts} isOwner={isOwner} />
     </div>
   );
 }
