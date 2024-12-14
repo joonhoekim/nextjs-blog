@@ -133,3 +133,25 @@ export function PostForm() {
   return <form action={handleSubmit}>{/* form 내용 */}</form>;
 }
 ```
+
+
+### Prisma 쿼리 작성하기
+
+Prisma Client가 쿼리를 내부적으로 정규화하기 때문에 작성 순서가 달라도 잘 동작하지만,
+아래 순서로 작성하는 것이 권장된다. SQL의 일반적인 구문 순서이다. 
+
+```ts
+await prisma.model.operation({
+  where: {},     // 1. 필터링 조건
+  select: {},    // 2. 반환할 필드
+  include: {},   // 3. 관계 포함
+  orderBy: {},   // 4. 정렬
+  take: n,       // 5. 제한
+  skip: n        // 6. 오프셋
+})
+```
+
+### zod 사용하기
+
+이전에는 필요한 아규먼트를 액션 함수의 파라미터로 지정해서 받았는데, 함수가 변경될 때 처리해야 하는 것이 많았다.
+zod 를 사용하여 유효성 검증과 타입 활용을 통해 더 쉽게 작성하는 게 좋을 것 같다.
