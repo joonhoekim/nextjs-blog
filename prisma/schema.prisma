@@ -29,7 +29,7 @@ model Category {
 }
 
 model Post {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   title     String
   slug      String
   content   String
@@ -112,6 +112,8 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
+
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -136,6 +138,8 @@ model User {
   @@index([id])
   @@index([handle])
 }
+
+
 
 model VerificationRequest {
   id         String   @id @default(cuid())
