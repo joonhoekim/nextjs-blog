@@ -15,3 +15,5 @@ export const UserSchema = z.object({
   bio: z.string().max(500, "자기소개는 500자를 초과할 수 없습니다").optional(),
   image: z.string().url("올바른 URL 형식이 아닙니다").optional(),
 });
+
+export const CommonUserSchema = UserSchema.partial();

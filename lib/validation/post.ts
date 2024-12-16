@@ -15,3 +15,5 @@ export const PostSchema = z.object({
   categoryId: z.string().min(1, "카테고리를 선택해주세요"),
   published: z.boolean().default(false),
 });
+
+export const CommonPostSchema = PostSchema.partial();
