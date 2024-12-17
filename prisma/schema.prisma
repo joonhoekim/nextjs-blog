@@ -134,6 +134,7 @@ model User {
   categories Category[]
   posts      Post[]
   comments   Comment[]
+  files         FileUpload[]  // MinIO fileUpload
 
   @@index([id])
   @@index([handle])
@@ -153,3 +154,22 @@ model VerificationRequest {
 }
 
 // ----- 위 모델은 next-auth prisma adapter를 위해 필요함 ----------
+
+// ----- MinIO 를 위한 모델 -----
+model FileUpload {
+  id          String   @id @default(cuid())
+  userId      String
+  fileName    String
+  fileType    String
+  fileSize    Int
+  bucketName  String
+  objectName  String
+  url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+// ----- MinIO 를 위한 모델 -----
