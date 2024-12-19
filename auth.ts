@@ -2,12 +2,13 @@
 // - extracted from route.ts.
 // reference: https://next-auth.js.org/configuration/nextjs
 
-import { prisma } from '@/lib/prisma';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import NextAuth, { NextAuthOptions, Account, Profile, User } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
+import { prisma } from "@/lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth, { NextAuthOptions, Account, Profile, User } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
+  debug: !!process.env.AUTH_DEBUG,
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -16,7 +17,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
@@ -34,5 +35,5 @@ export const authOptions: NextAuthOptions = {
     // newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 };
-export const handler = NextAuth(authOptions);
+export const { handler } = NextAuth(authOptions);
 export const { auth, signIn, signOut } = handler;
